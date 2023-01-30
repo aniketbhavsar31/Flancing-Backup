@@ -1,0 +1,42 @@
+---
+- name: test
+  hosts: all
+  tasks:
+  - name: Print extra vars
+    debug:
+      msg: 
+        - "Agency id is {{ extra_vars.agency_id }}"
+        - "Service now id is {{ extra_vars.servicenow_id }}"
+        - "Request type is {{ extra_vars.request_type }}"      
+  - name: Print extra vars2
+    debug:
+      msg: 
+        - "Mac id is {{ item.mac }}"
+        - "Site now id is {{ item.site }}"
+        - "Vlan type is {{ item.vlan }}"
+    loop: "{{ extra_vars.detail }}"
+  - name: Url moudule
+    uri:
+       url: https://reqres.in/api/users
+       method: POST
+       body: |-
+           {
+            "extra_vars": {
+              "agency_id": "agency_id",
+              "servicenow_id": "servicenow_id",
+              "request_type": "request_type",
+              "detail": [
+                {
+                 "mac": "macaddress",
+                 "site": "site_id",
+                  "vlan": "vlan_name"
+                } ,
+                {
+                  "mac": "macaddress1",
+                  "site": "site_id2",
+                  "vlan": "vlan_name3"
+                }
+              ]
+            }
+       return_content: yes
+       status_code: 201
