@@ -1,0 +1,18 @@
+---
+- name: Curl playbook test
+  become: true
+  hosts: localhost
+  tasks:
+  - name: Execute API
+    uri:
+       url: https://123.89.204.16:9060/ers/config/endpoint
+       method: POST
+       user: USERNAME
+       password: PASSWORD
+       headers:
+        Content-Type: application/json
+        Accept: application/json
+    register: result
+  - name: Print output
+    debug:
+       msg: "{{ result.resources.id }}"
