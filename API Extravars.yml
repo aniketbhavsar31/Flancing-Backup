@@ -1,0 +1,32 @@
+### NOTE: define groupId and mac variables in extravars on Ansible tower before exection of the plybook.
+---
+- name: API Call
+  become: true
+  hosts: localhost
+  tasks:
+  - name: Execute API for Group ID
+    uri:
+        url: "https://123.89.204.16:9060/ers/config/endpoint?filter={{ groupId }}"
+        method: POST
+        user: USERNAME
+        password: PASSWORD
+        headers:
+           Content-Type: "application/json"
+           Accept: application/json
+    register: groupid_result
+  - name: Print output
+    debug:
+       msg: "{{ groupid_result }}"
+  - name: Execute API for MAC
+    uri:
+       url: "https://123.89.204.16:9060/ers/config/endpoint?filter={{ mac }}"
+       method: POST
+       user: USERNAME
+       password: PASSWORD
+       headers:
+          Content-Type: "application/json"
+          Accept: application/json
+    register: mac_result
+  - name: Print output
+    debug:
+       msg: "{{ mac_result }}"
